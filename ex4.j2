@@ -1,0 +1,18 @@
+{% for vrf in vrf_list %}
+vrf definition {{ vrf["VRF_NAME"] }}
+ rd {{ vrf["RD"] }}
+!
+{%- if vrf["IPv4_ENABLED"] == True %}
+ address-familiy ipv4
+  route-target export {{ vrf["RD"] }}
+  route-target import {{ vrf["RD"] }}
+ exit-address-family
+{%- endif %}
+!
+{%- if vrf["IPv6_ENABLED"] == True %}
+ address-family ipv6
+  route-target export {{ vrf["RD"] }}
+  route-target import {{ vrf["RD"] }}
+ exit-address-family
+{%- endif %}
+{% endfor %}
